@@ -2,19 +2,19 @@ const Router = require('koa-router')
 const axios = require('./utils/axios')
 const Cart = require('../dbs/models/cart')
 const sign = require('./utils/sign')
-const md5 = require('crypto-js')
+const CrytoJS = require('crypto-js')
 
 let router = new Router({prefix: '/cart'})
 
 router.post('/create', async ctx => {
-  if (ctx.isAuthenticated()) {
+  if (!ctx.isAuthenticated()) {
     ctx.body = {
       code: -1,
       msg: 'please login'
     }
   } else {
     let time = Date()
-    let cartNo = md5(Math.random() * 1000 + new Date().getTime()).toString()
+    let cartNo = CrytoJS.MD5(Math.random() * 1000 + time).toString()
     let {params: {id, detail}} = ctx.request.body
     let cart = new Cart({
       id,
