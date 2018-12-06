@@ -29,12 +29,12 @@
         <b>{{ meta.status }}</b>
       </p>
       <ul>
-        <!-- <li>
-          <span class="detail-type">门票</span>{{meta.ticket}}
+        <li>
+          <span class="detail-type">门票</span>{{ meta.ticket }}
         </li>
         <li>
-          <span class="detail-type">跟团</span>{{meta.group}}
-        </li> -->
+          <span class="detail-type">跟团</span>{{ meta.group }}
+        </li>
         <li v-if="meta.scene&&meta.scene.length">
           <span class="detail-type">景酒</span>{{ meta.scene }}
         </li>
@@ -47,14 +47,14 @@
 </template>
 
 <script>
-export default {
-  props: {
-    meta: {
-      type:Object,
-      default(){
-        return {}
+  export default {
+    props: {
+      meta: {
+        type:Object,
+        default(){
+          return {}
+        }
       }
     }
   }
-}
 </script>

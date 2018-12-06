@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
+
 const Schema = mongoose.Schema
 const City = new Schema({
   id: {
@@ -11,4 +12,4 @@ const City = new Schema({
   }
 })
 
-export default mongoose.model('City', City)
+module.exports =  mongoose.model('City', City)

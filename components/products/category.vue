@@ -1,55 +1,64 @@
 <template>
   <div class="m-product-categroy">
     <dl class="classic">
-      <dt>分类</dt>
-      <dt>全部</dt>
-      <dd
-        v-for="(item,idx) in types"
-        :key="idx">
-        <iselect
-          :name="item.type"
-          :list="item.module"/>
-      </dd>
+      <div class="label">
+        <dt>分类</dt>
+        <dt>全部</dt>
+      </div>
+      <div class="tags">
+        <dd
+          v-for="(item,idx) in types"
+          :key="idx">
+          <iselect
+            :name="item.type"
+            :list="item.module"/>
+        </dd>
+      </div>
     </dl>
     <dl class="classic">
-      <dt>分类</dt>
-      <dt>全部</dt>
-      <dd
-        v-for="(item,idx) in areas"
-        :key="idx">
-        <iselect
-          :name="item.type"
-          :list="item.module"/>
-      </dd>
+      <div class="label">
+        <dt>分类</dt>
+        <dt>全部</dt>
+      </div>
+      <div class="tags">
+        <dd
+          v-for="(item,idx) in areas"
+          :key="idx">
+          <iselect
+            :name="item.type"
+            :list="item.module"/>
+        </dd>
+      </div>
     </dl>
   </div>
 </template>
 
 <script>
-import iselect from './iselect.vue'
-export default {
-  components: {
-    iselect
-  },
-  props: {
-    types: {
-      type: Array,
-      default(){
-        return []
+  import iselect from './iselect.vue'
+
+  export default {
+    components: {
+      iselect
+    },
+    props: {
+      types: {
+        type: Array,
+        default() {
+          return []
+        }
+      },
+      areas: {
+        type: Array,
+        default() {
+          return []
+        }
       }
     },
-    areas: {
-      type:Array,
-      default(){
-        return []
-      }
-    }
-  },
-}
+  }
 </script>
 
 <style lang="scss">
-  .m-product-categroy{
+  .m-product-categroy {
     padding: 15px 20px 0;
     background: #FFF;
     border: 1px solid #E5E5E5;
@@ -59,12 +68,13 @@ export default {
     font-weight: 500;
     line-height: 20px;
   }
-  .classic{
+
+  .classic {
     display: flex;
     padding-bottom: 10px;
-    >dt{
+    > dt {
       width: 80px;
-      &:nth-child(2){
+      &:nth-child(2) {
         border-radius: 100px;
         background: #13D1BE;
         color: #FFF;
@@ -76,8 +86,8 @@ export default {
         text-align: center;
       }
     }
-    &:nth-child(1){
-      dd{
+    &:nth-child(1) {
+      dd {
         border-bottom: 1px solid #ddd;
       }
     }

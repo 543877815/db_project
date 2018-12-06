@@ -11,8 +11,7 @@ const store = () => new Vuex.Store({
     home
   },
   actions: {
-    async nuxtServerInit({commit}, {req, app}) {
-      // bug
+    async nuxtServerInit({commit, state}, {req, app}) {
       const {status, data: {province, city}} = await app.$axios.get('/geo/position')
       commit('geo/setPosition', status === 200 ? {city, province} : {city: '', province: ''})
 

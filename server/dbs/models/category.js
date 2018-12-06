@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
+
 const Schema = mongoose.Schema
 const Category = new Schema({
   city: {
@@ -8,10 +9,10 @@ const Category = new Schema({
     type: Array,
     require: true
   },
-  areas:{
-    type:Array,
-    require:true
+  areas: {
+    type: Array,
+    require: true
   }
 })
 
-export default mongoose.model('Category', Categroy)
+module.exports = mongoose.model('Category', Category)

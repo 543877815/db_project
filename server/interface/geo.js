@@ -1,10 +1,11 @@
 const Router = require('koa-router')
 const axios = require('./utils/axios')
 const Province = require('../dbs/models/province')
+const City = require('../dbs/models/city')
+const sign = require('./utils/sign')
 
 let router = new Router({prefix: '/geo'})
 
-const sign = '1538c25be6f0a342a8d10fbc2cb39922';
 
 router.get('/position', async (ctx) => {
   let {status, data: {province, city}} = await axios.get(`http://cp-tools.cn/geo/getPosition?sign=${sign}`)

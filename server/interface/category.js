@@ -1,14 +1,12 @@
-import Router from 'koa-router';
-import axios from './utils/axios'
-import Province from '../dbs/models/province'
+const Router = require('koa-router')
+const axios = require('./utils/axios')
+const sign = require('./utils/sign')
+const Category = require('../dbs/models/category')
 
-let router = new Router({prefix: '/categroy'})
-
-const sign = '1538c25be6f0a342a8d10fbc2cb39922';
+let router = new Router({prefix: '/category'})
 
 router.get('/crumbs',async (ctx)=>{
-
-  // let result = await Categroy.findOne({city: ctx.query.city.replace('市', '') || '北京'})
+  // let result = await Category.findOne({city: ctx.query.city.replace('市', '') || '北京'})
   // if (result) {
   //   ctx.body = {
   //     areas: result.areas,
@@ -33,5 +31,4 @@ router.get('/crumbs',async (ctx)=>{
   }
 })
 
-
-export default router;
+module.exports = router
