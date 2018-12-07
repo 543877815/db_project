@@ -1,6 +1,5 @@
 const Router = require('koa-router')
-const axios = require('./utils/axios')
-const Province = require('../dbs/models/order')
+const Order = require('../dbs/models/order')
 const CrytoJS = require('crypto-js')
 const Cart = require('../dbs/models/cart')
 

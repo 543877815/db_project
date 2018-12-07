@@ -35,8 +35,8 @@
   export default {
     name: "List",
     props: {
-      item: {
-        type:Object,
+      cur: {
+        type: Array,
         default: () => {
           return {}
         }
