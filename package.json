@@ -29,6 +29,7 @@
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
     "mongoose": "^5.3.14",
+    "mysql2": "^1.6.4",
     "nodemailer": "^4.7.0",
     "nuxt": "^2.0.0",
     "passport-local": "^1.0.0"
