@@ -42,32 +42,55 @@
           v-if="meta.create_date"
           style="padding-left: 10px">最近交易日期 {{ parseInt((new Date().getTime() - Date.parse(meta.create_date))/(24*3600*1000)) }} 天前</span>
       </p>
-      <!--<ul>-->
-      <!--<li>-->
-      <!--<span class="detail-type">门票</span>{{ meta.ticket }}-->
-      <!--</li>-->
-      <!--<li>-->
-      <!--<span class="detail-type">跟团</span>{{ meta.group }}-->
-      <!--</li>-->
-      <!--<li v-if="meta.scene&&meta.scene.length">-->
-      <!--<span class="detail-type">景酒</span>{{ meta.scene }}-->
-      <!--</li>-->
-      <!--<li v-else>-->
-      <!--<span class="detail-type">景酒</span>暂无描述-->
-      <!--</li>-->
-      <!--</ul>-->
+      <el-date-picker
+        v-model="value"
+        :picker-options="pickerOptions"
+        type="daterange"
+        align="right"
+        unlink-panels
+        range-separator="To"
+        start-placeholder="Start date"
+        end-placeholder="End date"/>
+        <!--<ul>-->
+        <!--<li>-->
+        <!--<span class="detail-type">门票</span>{{ meta.ticket }}-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<span class="detail-type">最近交易日期</span>{{ meta.group }}-->
+        <!--</li>-->
+        <!--<li v-if="meta.scene&&meta.scene.length">-->
+        <!--<span class="detail-type">景酒</span>{{ meta.scene }}-->
+        <!--</li>-->
+        <!--<li v-else>-->
+        <!--<span class="detail-type">景酒</span>暂无描述-->
+        <!--</li>-->
+        <!--</ul>-->
     </dd>
+
   </dl>
 </template>
 
 <script>
   export default {
+    components:{
+    },
     props: {
       meta: {
         type: Object,
         default() {
           return {}
         }
+      }
+    },
+    data(){
+      return{
+        value: '',
+        pickerOptions: {
+          disabledDate(time) {
+            console.log(time)
+            return time.getTime() < Date.now();
+          },
+        },
       }
     },
 

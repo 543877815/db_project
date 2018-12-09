@@ -20,7 +20,6 @@
 
 <script>
   import Item from './hotel.vue'
-
   export default {
     components: {
       Item
