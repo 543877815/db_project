@@ -51,7 +51,7 @@ let service = {
         }
       }
     }
-    _sql += ` price between ${filter.lowPrice} and ${filter.highPrice} group by room_id`
+    _sql += ` price between ${filter.lowPrice} and ${filter.highPrice} group by room_id ${filter.desc ? 'order by price' : 'order by price desc'} `
     // console.log(_sql)
     return service.query(_sql)
   }

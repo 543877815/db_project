@@ -6,7 +6,9 @@
         :stars="hotel_type"
         :room_type="room_type"
         @categoryChange="categoryChange"/>
-      <list :list="list"/>
+      <list
+        :list="list"
+        @priceSort="priceSort"/>
     </el-col>
     <el-col :span="5">
       <amap
@@ -39,6 +41,7 @@
         lowPrice: 0,
         highPrice: 99999999,
         keyword: '',
+        desc: '',
         point: ['103.936794', '30.752525']
       }
     },
@@ -48,25 +51,41 @@
         hotel_name: this.hotel_name,
         room_name: this.room_name,
         lowPrice: this.lowPrice,
-        highPrice: this.highPrice
+        highPrice: this.highPrice,
+        desc: this.desc
       })
     },
     methods: {
+      async priceSort(desc) {
+        this.desc = desc
+        await this.categoryChange({
+          stars: this.stars,
+          hotel_name: this.hotel_name,
+          room_name: this.room_name,
+          lowPrice: this.lowPrice,
+          highPrice: this.highPrice,
+          desc: desc
+        })
+      },
       async categoryChange(data) {
-        let self = this;
-        let {status, data: {list}} = await self.$axios.post('/hotels/list', {
+        this.stars = data.stars
+        this.hotel_name = data.hotel_name
+        this.room_name = data.room_name
+        this.lowPrice = data.lowPrice
+        this.highPrice = data.highPrice
+        let {status, data: {list}} = await this.$axios.post('/hotels/list', {
           hotel_name: data.hotel_name,
           stars: data.stars,
           room_name: data.room_name,
           lowPrice: data.lowPrice,
-          highPrice: data.highPrice
+          highPrice: data.highPrice,
+          desc: this.desc
         })
         if (status === 200) {
           this.list = list
         }
       }
     },
-
     async asyncData(ctx) {
       let {status, data: {room_type}} = await ctx.$axios.get('/hotels/room_type')
       let {status: status1, data: {hotels}} = await ctx.$axios.get('/hotels/hotel_name')

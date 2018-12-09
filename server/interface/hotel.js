@@ -26,7 +26,7 @@ router.get('/hotel_name', async ctx => {
 })
 
 router.post('/list', async ctx => {
-  let {hotel_name, stars, room_name, lowPrice, highPrice} = ctx.request.body;
+  let {hotel_name, stars, room_name, lowPrice, highPrice, desc} = ctx.request.body;
   let {rows, fields} = await hotel.getList({
     hotel_name,
     stars: stars.map(item => {
@@ -34,10 +34,11 @@ router.post('/list', async ctx => {
     }),
     room_name,
     lowPrice,
-    highPrice
+    highPrice,
+    desc
   })
   ctx.body = {
-    list:rows
+    list: rows
   }
 })
 

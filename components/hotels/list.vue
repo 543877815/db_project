@@ -2,10 +2,10 @@
   <div class="m-products-list">
     <dl>
       <dd
-        v-for="item in nav"
+        v-for="(item, index) in nav"
         :key="item.name"
-        :class="[item.name,item.acitve?'s-nav-active':'']"
-        @click="navSelect"
+        :class="[item.name, item.active?'s-nav-active':'']"
+        @click="navSelect(index)"
       >{{ item.txt }}
       </dd>
     </dl>
@@ -20,6 +20,7 @@
 
 <script>
   import Item from './hotel.vue'
+
   export default {
     components: {
       Item
@@ -34,11 +35,12 @@
     },
     data() {
       return {
+        desc: '',
         nav: [
           {
             name: 's-default',
             txt: '智能排序',
-            acitve: true
+            active: true
           }, {
             name: 's-price',
             txt: '价格最低',
@@ -60,8 +62,12 @@
       return {items: data.list}
     },
     methods: {
-      navSelect: function () {
-        console.log('select')
+      navSelect: function (idx) {
+        this.nav.forEach((item, index) => {
+          idx === index ? item.active = true : item.active = false
+        })
+        idx === 1 ? this.desc = 'desc' : this.desc = ''
+        this.$emit('priceSort', this.desc)
       }
     }
   }

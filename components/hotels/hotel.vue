@@ -31,7 +31,6 @@
       <p>
         <span class="s-item-type">{{ meta.room_name }};</span>
         <span class="s-item-addr">剩余{{ meta.remain }}间;
-
         </span>
       </p>
       <p>
