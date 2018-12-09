@@ -25,20 +25,35 @@ let service = {
     return service.query(_sql)
   },
   getList: function (filter) {
-    let _sql = `select hotel_name, stars, room_name, remain, price from hotel natural join room_type natural join room_info`
-    _sql += ' where'
+    let _sql = `select * from hotel natural join room_type natural join 
+                    (select max(date), remain, a.room_id, start_date, leave_date, amount, payment, create_date, price 
+                    from 
+                    (room_info a 
+                    left join 
+                    \`order\` b 
+                    on a.room_id = b.room_id) 
+               group by a.room_id) R1
+               where`
     for (let prop in filter) {
-      filter[prop].forEach(item => {
-        console.log(typeof(item))
-        if (typeof(item) ==='string'){
-          _sql += ` ${prop} = '${item}' or`
-        }else{
-          _sql += ` ${prop} = ${item} or`
+      if (typeof(filter[prop]) === 'object') {
+        if (filter[prop].length !== 0) {
+          _sql += '('
+          filter[prop].forEach(item => {
+            if (typeof(item) === 'string') {
+              _sql += ` ${prop} = '${item}'`
+            } else {
+              _sql += ` ${prop} = ${item}`
+            }
+            _sql += ' or'
+          })
+          _sql = _sql.substring(0, _sql.length - 2)
+          _sql += ') and '
         }
-      })
+      }
     }
-    console.log(_sql)
-    return service.query(_sql.substring(0, _sql.length - 2))
+    _sql += ` price between ${filter.lowPrice} and ${filter.highPrice} group by room_id`
+    // console.log(_sql)
+    return service.query(_sql)
   }
 }
 

@@ -26,16 +26,18 @@ router.get('/hotel_name', async ctx => {
 })
 
 router.post('/list', async ctx => {
-  let {hotel_name, stars, room_name} = ctx.request.body;
-  console.log(hotel_name,stars,room_name)
+  let {hotel_name, stars, room_name, lowPrice, highPrice} = ctx.request.body;
   let {rows, fields} = await hotel.getList({
     hotel_name,
-    stars: stars.map(item => {return parseInt(item)}),
+    stars: stars.map(item => {
+      return parseInt(item)
+    }),
     room_name,
+    lowPrice,
+    highPrice
   })
-  ctx.body={
-    code:0,
-    data: rows
+  ctx.body = {
+    list:rows
   }
 })
 

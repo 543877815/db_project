@@ -3,8 +3,9 @@
     <el-col :span="19">
       <category
         :hotels="hotels"
-        :stars="stars"
-        :room_type="room_type"/>
+        :stars="hotel_type"
+        :room_type="room_type"
+        @categoryChange="categoryChange"/>
       <list :list="list"/>
     </el-col>
     <el-col :span="5">
@@ -32,24 +33,40 @@
       return {
         list: [],
         stars: [],
-        room_type: [],
-        hotels: [],
+        room_name: [],
+        hotel_name: [],
+        hotel_type: [],
+        lowPrice: 0,
+        highPrice: 99999999,
         keyword: '',
         point: ['103.936794', '30.752525']
       }
     },
-    mounted() {
-      this.$axios.post('/hotels/list', {
-        hotel_name: ['惠民旅馆'],
-        stars: ['5'],
-        room_name: ['大床房', '双人房']
+    async mounted() {
+      await this.categoryChange({
+        stars: this.stars,
+        hotel_name: this.hotel_name,
+        room_name: this.room_name,
+        lowPrice: this.lowPrice,
+        highPrice: this.highPrice
       })
     },
     methods: {
-      getHotelList() {
-
+      async categoryChange(data) {
+        let self = this;
+        let {status, data: {list}} = await self.$axios.post('/hotels/list', {
+          hotel_name: data.hotel_name,
+          stars: data.stars,
+          room_name: data.room_name,
+          lowPrice: data.lowPrice,
+          highPrice: data.highPrice
+        })
+        if (status === 200) {
+          this.list = list
+        }
       }
     },
+
     async asyncData(ctx) {
       let {status, data: {room_type}} = await ctx.$axios.get('/hotels/room_type')
       let {status: status1, data: {hotels}} = await ctx.$axios.get('/hotels/hotel_name')
@@ -57,7 +74,7 @@
         return {
           room_type,
           hotels,
-          stars: [{
+          hotel_type: [{
             star: 2,
             type: '经济型'
           }, {

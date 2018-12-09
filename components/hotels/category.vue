@@ -9,7 +9,9 @@
         </dt>
       </div>
       <div class="tags">
-        <el-checkbox-group v-model="Hotel">
+        <el-checkbox-group
+          v-model="Hotel"
+          @change="categoryChange">
           <el-checkbox
             v-for="(item,idx) in hotels"
             :key="idx"
@@ -20,13 +22,15 @@
     <dl class="classic">
       <div class="label">
         <dt>星级</dt>
-        <dt 
+        <dt
           :class="starSelected?'disable':''"
           @click="resetStars">不限
         </dt>
       </div>
       <div class="tags">
-        <el-checkbox-group v-model="Stars">
+        <el-checkbox-group
+          v-model="Stars"
+          @change="categoryChange">
           <el-checkbox
             v-for="(item,idx) in stars"
             :key="idx"
@@ -37,13 +41,15 @@
     <dl class="classic">
       <div class="label">
         <dt>房型</dt>
-        <dt 
-          :class="roomTypeSelected?'disable':''" 
-          @click="resetRoomType">不限</dt>
+        <dt
+          :class="roomTypeSelected?'disable':''"
+          @click="resetRoomType">不限
+        </dt>
       </div>
       <div class="tags">
         <el-checkbox-group
-          v-model="roomType">
+          v-model="room_name"
+          @change="categoryChange">
           <el-checkbox
             v-for="(item,idx) in room_type"
             :key="idx"
@@ -54,12 +60,15 @@
     <dl class="classic">
       <div class="label">
         <dt>价格</dt>
-        <dt 
-          :class="radioPrice?'disable':''" 
-          @click="resetPrice">不限</dt>
+        <dt
+          :class="radioPrice?'disable':''"
+          @click="resetPrice">不限
+        </dt>
       </div>
       <div class="tags">
-        <el-radio-group v-model="radio">
+        <el-radio-group
+          v-model="radio"
+          @change="categoryChange">
           <el-radio :label="1">100以下</el-radio>
           <el-radio :label="2">100-200元</el-radio>
           <el-radio :label="3">200-300元</el-radio>
@@ -99,8 +108,8 @@
       return {
         Stars: [],
         Hotel: [],
-        roomType: [],
-        radio: 0
+        room_name: [],
+        radio: 0,
       }
     },
     computed: {
@@ -111,7 +120,7 @@
         return this.Stars.length === 0 ? false : true
       },
       roomTypeSelected() {
-        return this.roomType.length === 0 ? false : true
+        return this.room_name.length === 0 ? false : true
       },
       radioPrice() {
         return this.radio === 0 ? false : true
@@ -120,15 +129,76 @@
     methods: {
       resetHotel: function () {
         this.Hotel = []
+        this.categoryChange()
       },
       resetStars() {
         this.Stars = []
+        this.categoryChange()
       },
       resetRoomType() {
-        this.roomType = []
+        this.room_name = []
+        this.categoryChange()
       },
       resetPrice() {
         this.radio = 0
+        this.categoryChange()
+      },
+      categoryChange() {
+        let lowPrice, highPrice
+        switch (this.radio) {
+          case 1:
+            lowPrice = 0
+            highPrice = 100
+            break;
+          case 2:
+            lowPrice = 100
+            highPrice = 200
+            break;
+          case 3:
+            lowPrice = 200
+            highPrice = 300
+            break;
+          case 4:
+            lowPrice = 300
+            highPrice = 400
+            break;
+          case 5:
+            lowPrice = 400
+            highPrice = 500
+            break;
+          case 6:
+            lowPrice = 500
+            highPrice = 9999999
+            break;
+          default:
+            lowPrice = 0
+            highPrice = 9999999
+            break;
+        }
+        let hotel_type = []
+        this.Stars.forEach(item => {
+          switch (item) {
+            case '经济型':
+              hotel_type.push(2)
+              break
+            case  '舒适/三星':
+              hotel_type.push(3)
+              break
+            case '高档/四星':
+              hotel_type.push(4)
+              break
+            case  '豪华/五星':
+              hotel_type.push(5)
+              break
+          }
+        })
+        this.$emit('categoryChange', {
+          stars: hotel_type,
+          hotel_name: this.Hotel,
+          room_name: this.room_name,
+          lowPrice: lowPrice,
+          highPrice: highPrice
+        })
       }
     }
   }
@@ -138,6 +208,7 @@
   .page-hotel .classic .label dt.disable {
     color: #000 !important;
     background-color: #fff !important;
+    cursor: pointer !important;
   }
 
   .el-checkbox, .el-radio-group {
