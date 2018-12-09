@@ -8,6 +8,23 @@ module.exports = {
       return 6379
     }
   },
+  mysql:{
+    get database(){
+      return 'lesson_project'
+    },
+    get username(){
+      return 'root'
+    },
+    get password(){
+      return 'lfj945051'
+    },
+    get port(){
+      return '3306'
+    },
+    get host(){
+      return 'localhost'
+    }
+  },
   smtp:{
     get host(){
       return 'smtp.qq.com'

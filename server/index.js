@@ -7,6 +7,7 @@ const bodyParser = require('koa-bodyparser')
 const session = require('koa-generic-session')
 const Redis = require('koa-redis')
 const json = require('koa-json')
+
 const dbConfig = require('./dbs/config')
 const passport = require('./interface/utils/passport')
 const users = require('./interface/users')
@@ -15,6 +16,7 @@ const search = require('./interface/search')
 const category = require('./interface/category')
 const cart = require('./interface/cart')
 const order = require('./interface/order')
+const mysql = require('./interface/hotel')
 
 const app = new Koa()
 const host = process.env.HOST || '127.0.0.1'
@@ -59,6 +61,7 @@ async function start() {
   app.use(category.routes()).use(category.allowedMethods())
   app.use(cart.routes()).use(cart.allowedMethods())
   app.use(order.routes()).use(order.allowedMethods())
+  app.use(mysql.routes()).use(mysql.allowedMethods())
 
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset

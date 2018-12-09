@@ -66,7 +66,7 @@
           </li>
           <li>
             <nuxt-link
-              to="/"
+              to="/hotels"
               class="hotel">美团酒店
             </nuxt-link>
           </li>
