@@ -42,4 +42,17 @@ router.post('/list', async ctx => {
   }
 })
 
+router.post('/getRoomStatus', async ctx => {
+  let {room_id, start_date, leave_date} = ctx.request.body;
+  let {rows, fields} = await hotel.getRoomStatus({
+    room_id,
+    start_date: start_date,
+    leave_date: leave_date
+  })
+
+  ctx.body = {
+    data: rows
+  }
+})
+
 module.exports = router;

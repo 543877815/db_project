@@ -36,7 +36,10 @@
       <p>
         <em class="s-item-price">￥{{ meta.price }}起</em>
         <!--<b>{{ meta.status }}</b>-->
-        <b style="cursor: pointer;">查看是否可订</b>
+        <b 
+          :data-id="meta.room_id"
+          style="cursor: pointer;"
+          @click="checkStatus(meta.room_id)">查看是否可订</b>
         <span
           v-if="meta.create_date"
           style="padding-left: 10px">最近交易日期 {{ parseInt((new Date().getTime() - Date.parse(meta.create_date))/(24*3600*1000)) }} 天前</span>
@@ -50,20 +53,6 @@
         range-separator="To"
         start-placeholder="Start date"
         end-placeholder="End date"/>
-        <!--<ul>-->
-        <!--<li>-->
-        <!--<span class="detail-type">门票</span>{{ meta.ticket }}-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<span class="detail-type">最近交易日期</span>{{ meta.group }}-->
-        <!--</li>-->
-        <!--<li v-if="meta.scene&&meta.scene.length">-->
-        <!--<span class="detail-type">景酒</span>{{ meta.scene }}-->
-        <!--</li>-->
-        <!--<li v-else>-->
-        <!--<span class="detail-type">景酒</span>暂无描述-->
-        <!--</li>-->
-        <!--</ul>-->
     </dd>
 
   </dl>
@@ -86,12 +75,23 @@
         value: '',
         pickerOptions: {
           disabledDate(time) {
-            console.log(time)
             return time.getTime() < Date.now();
           },
         },
       }
     },
-
+    methods:{
+      checkStatus(value){
+        if (this.value.length === 0){
+          this.$message('提示：请选择日期');
+        }else{
+          this.$emit('getStatus', {
+            room_id: value,
+            start_date: this.value[0],
+            leave_date: this.value[1]
+          });
+        }
+      }
+    }
   }
 </script>

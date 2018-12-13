@@ -1,23 +1,55 @@
 <template>
-  <el-row class="page-hotel">
-    <el-col :span="19">
-      <category
-        :hotels="hotels"
-        :stars="hotel_type"
-        :room_type="room_type"
-        @categoryChange="categoryChange"/>
-      <list
-        :list="list"
-        @priceSort="priceSort"/>
-    </el-col>
-    <el-col :span="5">
-      <amap
-        v-if="point.length"
-        :width="230"
-        :height="290"
-        :point="point"/>
-    </el-col>
-  </el-row>
+  <div>
+    <el-row class="page-hotel">
+      <el-col :span="19">
+        <category
+          :hotels="hotels"
+          :stars="hotel_type"
+          :room_type="room_type"
+          @categoryChange="categoryChange"/>
+        <list
+          :list="list"
+          @getStatus="getStatus"
+          @priceSort="priceSort"/>
+      </el-col>
+      <el-col :span="5">
+        <amap
+          v-if="point.length"
+          :width="230"
+          :height="290"
+          :point="point"/>
+      </el-col>
+    </el-row>
+    <!--<el-button -->
+    <!--type="text" -->
+    <!--@click="dialogTableVisible = true">open a Table nested Dialog</el-button>-->
+
+    <el-dialog
+      :visible.sync="dialogTableVisible"
+      title="房间信息">
+      <el-table :data="gridData">
+        <el-table-column
+          property="hotel_name"
+          label="酒店名"
+          width="200"/>
+        <el-table-column
+          property="room_name"
+          label="房型"
+          width="200"/>
+        <el-table-column
+          property="date"
+          label="日期"
+          width="200"/>
+        <el-table-column
+          property="price"
+          label="价格（￥）"
+          width="200"/>
+        <el-table-column
+          property="remain"
+          label="剩余"/>
+      </el-table>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -33,6 +65,8 @@
     },
     data() {
       return {
+        dialogTableVisible: false,
+        gridData: [],
         list: [],
         stars: [],
         room_name: [],
@@ -56,6 +90,29 @@
       })
     },
     methods: {
+      getDate(Date) {
+        let date = Date.getDate().toString()
+        date.length === 1 ? date = '0' + date : ''
+        let month = Date.getMonth() + 1 === 13 ? '12' : (Date.getMonth() + 1).toString()
+        month.length === 1 ? month = '0' + month : ''
+        let year = Date.getFullYear().toString()
+        return `${year}-${month}-${date}`
+      },
+      async getStatus(value) {
+        let {status, data} = await this.$axios.post('/hotels/getRoomStatus', {
+          room_id: value.room_id,
+          start_date: this.getDate(value.start_date),
+          leave_date: this.getDate(value.leave_date)
+        })
+        if (status === 200) {
+          console.log(data)
+          data.data.forEach(item => {
+            item.date = item.date.substring(0, 10)
+          })
+          this.gridData = data.data
+            this.dialogTableVisible = true
+        }
+      },
       async priceSort(desc) {
         this.desc = desc
         await this.categoryChange({

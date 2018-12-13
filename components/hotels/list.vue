@@ -13,7 +13,8 @@
       <Item
         v-for="(item,idx) in list"
         :key="idx"
-        :meta="item"/>
+        :meta="item"
+        @getStatus="getStatus"/>
     </ul>
   </div>
 </template>
@@ -68,6 +69,9 @@
         })
         idx === 1 ? this.desc = 'desc' : this.desc = ''
         this.$emit('priceSort', this.desc)
+      },
+      getStatus: function (value) {
+        this.$emit('getStatus', value)
       }
     }
   }
