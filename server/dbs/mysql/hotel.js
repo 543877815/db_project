@@ -10,11 +10,14 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise()
 
-
 let service = {
   query: async function (sql) {
-    const [rows, fields] = await promisePool.query(sql)
-    return {rows, fields}
+    try {
+      const [rows, fields] = await promisePool.query(sql)
+      return {rows, fields}
+    }catch (e) {
+      return e
+    }
   },
   getRoomType: function () {
     let _sql = `select room_name from room_type`
@@ -51,10 +54,19 @@ let service = {
         }
       }
     }
-    _sql += ` price between ${filter.lowPrice} and ${filter.highPrice} group by room_id`
+    _sql += ` price between ${filter.lowPrice} and ${filter.highPrice} group by room_id ${filter.desc ? 'order by price' : 'order by price desc'} `
     // console.log(_sql)
+    return service.query(_sql)
+  },
+
+  getRoomStatus: function (filter) {
+    let _sql = `select * from room_info natural join room_type natural join hotel
+                where room_id = ${filter.room_id} 
+                and date >= '${filter.start_date}' 
+                and date <= '${filter.leave_date}'`
     return service.query(_sql)
   }
 }
 
 module.exports = service
+
