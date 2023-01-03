@@ -31,7 +31,7 @@
     "mongoose": "^5.3.14",
     "mysql2": "^1.6.4",
     "nodemailer": "^4.7.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
